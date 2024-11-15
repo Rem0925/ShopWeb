@@ -30,25 +30,25 @@ var Productos = JSON.parse(localStorage.getItem("productos")) ?? [
     id: 1,
     name: "Producto 1",
     price: 10,
-    imagen: "/1/Proyectos/Shop/img/NoImg.jpg",
+    imagen: "img/NoImg.jpg",
   },
   {
     id: 2,
     name: "Producto 2",
     price: 15,
-    imagen: "/1/Proyectos/Shop/img/NoImg.jpg",
+    imagen: "img/NoImg.jpg",
   },
   {
     id: 3,
     name: "Producto 3",
     price: 150,
-    imagen: "/1/Proyectos/Shop/img/NoImg.jpg",
+    imagen: "img/NoImg.jpg",
   },
   {
     id: 4,
     name: "Producto 4",
     price: 100,
-    imagen: "/1/Proyectos/Shop/img/NoImg.jpg",
+    imagen: "img/NoImg.jpg",
   },
 ];
 var Carrito = JSON.parse(localStorage.getItem("carrt")) || [];
@@ -84,7 +84,7 @@ function DisplayProAdmin() {
   } else {
     Previa.name.innerHTML = "Sin Productos";
     Previa.price.innerHTML = "0$";
-    Previa.img.src = "/1/Proyectos/Shop/img/NoImg.jpg";
+    Previa.img.src = "img/NoImg.jpg";
   }
 }
 ListaProductosAD.addEventListener("change", function () {
