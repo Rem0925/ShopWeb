@@ -21,7 +21,7 @@
     </header>
     <section id="products">
       <h2>Productos</h2>
-      <input type="search" name="Buscar" id="Buscar" />
+      <input type="search" name="Buscar" id="Buscar" /> <i class="bi bi-search"></i>
       <div id="Products_all"></div>
     </section>
     <section id="cart"style="display: none;">
@@ -61,9 +61,11 @@
           <select name="listProduct" id="listProduct">
           </select>
           <section id="VistaPrevia">
-            <h3 id="NombreProAd">Titulo</h3>
+            <button class="Edit_p" id="Editt" onclick="EditarPro()" ><i class="bi bi-pencil-square"></i></button>
+            <h3><input type="text" id="NombreProAd" class="Prev" value="Titulo" disabled></h3>
             <img id="ImgProAd" src="" alt="producto" />
-            <p id="PriceProAd"></p>
+            <input type="file" id="fileInput" accept="image/*" style="display: none">
+            <p><input type="number" id="PriceProAd" class="Prev Num" value="0" disabled> $ </p>
           </section>
           <button id="BorrarProducto">Quitar Producto</button>
         </div>

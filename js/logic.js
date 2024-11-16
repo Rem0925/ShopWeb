@@ -23,13 +23,19 @@ const Previa = {
   name: document.getElementById("NombreProAd"),
   price: document.getElementById("PriceProAd"),
   img: document.getElementById("ImgProAd"),
+  fileInput: document.getElementById("fileInput"),
+  edit: document.getElementById("Editt"),
+  id: 0,
 };
+var EditarProducto = false;
 //Referencia a los botones de agregar producto y eliminar en la seccion admin-------------------------
 const addProductButton = document.getElementById("Agregar");
 const deleteProductButton = document.getElementById("BorrarProducto");
 
 //Lista de productos por defecto y los que se pueden editar para mostrar en la pagina-----------------
-var Productos = JSON.parse(localStorage.getItem("productos")) /*Deberia pedir de una bases de datos en vez del local storage */?? [
+var Productos = JSON.parse(
+  localStorage.getItem("productos")
+) /*Deberia pedir de una bases de datos en vez del local storage */ ?? [
   {
     id: 1,
     name: "Producto 1",
@@ -56,21 +62,23 @@ var Productos = JSON.parse(localStorage.getItem("productos")) /*Deberia pedir de
   },
 ];
 //Carrito de compras------------------------------------------------------------------------------------
-var Carrito = JSON.parse(localStorage.getItem("carrt"))/*Lo mismo que con los productos, el local storage*/ || [];
-
+var Carrito =
+  JSON.parse(
+    localStorage.getItem("carrt")
+  ) /*Lo mismo que con los productos, el local storage*/ || [];
 
 //Mostrar todos los productos de array Productos en la pestaña "Productos"--------------------------------------------------
 function displayProducts(filter = "") {
   const productsSection = document.getElementById("Products_all");
   productsSection.innerHTML = " ";
   Productos.forEach((product) => {
-    if (product.name.toLowerCase().includes(filter.toLowerCase())) { //filtrar los productos segun el valor de filter
+    if (product.name.toLowerCase().includes(filter.toLowerCase())) {
+      //filtrar los productos segun el valor de filter
       const productElement = document.createElement("div");
       productElement.classList.add("product");
-
       productElement.innerHTML = `
             <h3>${product.name} </h3>
-            <p>${product.price} $</p>
+            <p>${product.price} $ </p>
             <img src="${product.imagen}" alt="producto ${product.id}">
             <button class="Agre" id="BT_${product.id}" data-product="${product.id},${product.name},${product.price},${product.imagen}"  
             onclick="AgregarCarro(${product.id},'${product.name}',${product.price},
@@ -86,14 +94,18 @@ function DisplayProAdmin() {
   Productos.forEach((product) => {
     ListaProductosAD.innerHTML += ` <option value="${product.id}"> ${product.name} -${product.price} $ </option>`;
   });
-  if (Productos.length > 0) {//Si hay mas de un produto, mostrar el primero por defecto
-    Previa.name.innerHTML = `${Productos[0].name}`;
-    Previa.price.innerHTML = ` ${Productos[0].price} $`;
+  if (Productos.length > 0) {
+    //Si hay mas de un produto, mostrar el primero por defecto
+    Previa.name.value = `${Productos[0].name}`;
+    Previa.price.value = Productos[0].price;
     Previa.img.src = `${Productos[0].imagen}`;
-  } else {//si no hay ningun producto nostras eso de abajo
-    Previa.name.innerHTML = "Sin Productos";
-    Previa.price.innerHTML = "0$";
+    Previa.id = `${Productos[0].id}`;
+  } else {
+    //si no hay ningun producto nostras eso de abajo
+    Previa.name.value = "Sin Productos";
+    Previa.price.value = 0;
     Previa.img.src = "img/NoImg.jpg";
+    Previa.id = 0;
   }
 }
 //Cuando se seleccione otra opcion de la lista de productos en la pestaña admin, mostras visualmente el producto seleccionado-------------------------------
@@ -101,11 +113,52 @@ ListaProductosAD.addEventListener("change", function () {
   var selectedOption = this.options[ListaProductosAD.selectedIndex];
   for (let i in Productos) {
     if (+selectedOption.value === Productos[i].id) {
-      Previa.name.innerHTML = `${Productos[i].name} `;
-      Previa.price.innerHTML = ` ${Productos[i].price} $`;
+      Previa.name.value = `${Productos[i].name} `;
+      Previa.price.value = Productos[i].price;
       Previa.img.src = `${Productos[i].imagen}`;
+      Previa.id = `${Productos[i].id}`;
     }
   }
+});
+let productoEditImg = null;
+function EditarPro() {
+  LimpiarCarrito();
+  EditarProducto = !EditarProducto;
+  if (EditarProducto == true && Productos.length > 0) {
+    Previa.name.disabled = false;
+      Previa.price.disabled = false;
+    Previa.edit.innerHTML = `<i class="bi bi-check2-circle"></i>`;
+    Previa.img.addEventListener("click", handleImageClick);
+    Previa.img.style.border = "1px solid #4c5353 ";
+  } else {
+    Previa.img.style.border = "1px solid transparent";
+    Previa.edit.innerHTML = `<i class="bi bi-pencil-square">`;
+    const Buscar = Productos.findIndex((item) => item.id === Number(Previa.id));
+    if (Buscar !== -1) { 
+      if (productoEditImg) {
+      Productos[Buscar].imagen = productoEditImg;
+      }
+      Previa.name.disabled = true;
+      Previa.price.disabled = true;
+      Productos[Buscar].name = Previa.name.value.trim();
+      Productos[Buscar].price = Number(Previa.price.value.trim());
+      localStorage.setItem("productos", JSON.stringify(Productos));
+      DisplayProAdmin(); // Guardar cambios en localStorage
+    }
+    Previa.img.removeEventListener("click", handleImageClick);
+  }
+}
+function handleImageClick() {
+  Previa.fileInput.click();
+}
+Previa.fileInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = function () {
+    productoEditImg = reader.result;
+    Previa.img.src = productoEditImg;
+  };
+  reader.readAsDataURL(file);
 });
 //Cada vez que se cargue la pagina verificar si algun producto esta en el carrito para asi desabilitar el boton de agregar-----------------
 function VerificarCompra() {
@@ -132,7 +185,7 @@ function AgregarCarro(idd, namee, pricee, image) {
     numero: 0,
     cantidad: 1,
   });
-  localStorage.setItem("carrt", JSON.stringify(Carrito));//se guarda en el local storage a falta de base de datos :(
+  localStorage.setItem("carrt", JSON.stringify(Carrito)); //se guarda en el local storage a falta de base de datos :(
   displayCart();
 }
 
@@ -165,7 +218,7 @@ function RestarP(elemt1) {
   if (Carrito[Buscar].cantidad > 1) {
     Carrito[Buscar].cantidad = Carrito[Buscar].cantidad - 1;
     displayCart();
-    localStorage.setItem("carrt", JSON.stringify(Carrito));//Deberia guardarse el carrito en una base de datos
+    localStorage.setItem("carrt", JSON.stringify(Carrito)); //Deberia guardarse el carrito en una base de datos
   }
 }
 //funcion para aumente la cantidad de productos de un mismo tipo a comprar-------------------------------------------------------
@@ -174,14 +227,15 @@ function SumarP(elemt1) {
   if (Carrito[Buscar].cantidad < 9) {
     Carrito[Buscar].cantidad = Carrito[Buscar].cantidad + 1;
     displayCart();
-    localStorage.setItem("carrt", JSON.stringify(Carrito));
+    localStorage.setItem("carrt", JSON.stringify(Carrito)); //igualmente aqui
   }
 }
+//Quitar elemento del carrito de compras--------------------------------------------------------------------
 function EliminarDeCarrito(Elem) {
   const Buscar = Carrito.findIndex((item) => item.id === Elem);
   if (Buscar !== -1) {
     Carrito.splice(Buscar, 1);
-    localStorage.setItem("carrt", JSON.stringify(Carrito));//igualmente aqui
+    localStorage.setItem("carrt", JSON.stringify(Carrito));
     displayCart();
   }
 }
@@ -207,7 +261,7 @@ document.getElementById("Buscar").addEventListener("input", function () {
 //Agregar un producto a la lista desde la pestaña admin----------------------------------------------------------------------------
 form.addEventListener("submit", (event) => {
   event.preventDefault(); // Evita que el formulario se envíe
- // Validación simple (Seguridad Nula xd)
+  // Validación simple (Seguridad Nula xd)------------------------------------------------------
   const username = usernameInput.value;
   const password = passwordInput.value;
   if (username === "admin" && password === "admin") {
@@ -266,20 +320,26 @@ function handleImageUpload(event) {
 function agregarProducto() {
   const productName = document.getElementById("ProductName").value;
   const productPrice = document.getElementById("Price").value;
-  const newProduct = {
-    id: Productos.length + 1,
-    name: productName,
-    price: Number(productPrice),
-    imagen: newProductImage ?? "img/NoImg.jpg",
-  };
-  Productos.push(newProduct);
-  localStorage.setItem("productos", JSON.stringify(Productos));//se guarda los productos en ya saben donde >:(
-  displayProducts();
-  DisplayProAdmin();
-  limpiarInputs();
+  if(productPrice >= 1){
+    const newProduct = {
+      id: Productos.length + 1,
+      name: productName,
+      price: Number(productPrice),
+      imagen: newProductImage ?? "img/NoImg.jpg",
+    };
+    Productos.push(newProduct);
+    localStorage.setItem("productos", JSON.stringify(Productos)); //se guarda los productos en ya saben donde >:(
+    displayProducts();
+    DisplayProAdmin();
+    limpiarInputs();
+  }else{
+    document.getElementById("Price").style.backgroundColor = "#e74c3c";
+  }
+  
 }
 //limpia los imputs al agregar el producto---------------------------------------------------------------------
 function limpiarInputs() {
+  document.getElementById("Price").style.backgroundColor = "white";
   document.getElementById("ProductName").value = "";
   document.getElementById("Price").value = "";
   document.getElementById("Imagen").value = "";
@@ -287,25 +347,26 @@ function limpiarInputs() {
 }
 //Al dar click al boton de agregar producto pues se agrega a la lista de productos----------------------------------------------------
 addProductButton.addEventListener("click", function (event) {
-  Carrito = [];
-  displayCart();
-  localStorage.setItem("carrt", JSON.stringify(Carrito));//se guarda Carrito
+  LimpiarCarrito();
   event.preventDefault();
   agregarProducto();
 });
 //Eliminar el producto seleccionado en la lista al pulsar el boton----------------------------------------------------------
 deleteProductButton.addEventListener("click", function () {
-  Carrito = [];
-  displayCart();
-  localStorage.setItem("carrt", JSON.stringify(Carrito));//Se guarda Carrito pero vacio
-  const selectedOption =
-    ListaProductosAD.options[ListaProductosAD.selectedIndex];
+ LimpiarCarrito();
+  const selectedOption = ListaProductosAD.options[ListaProductosAD.selectedIndex];
   const productId = +selectedOption.value;
   Productos = Productos.filter((product) => product.id !== productId);
-  localStorage.setItem("productos", JSON.stringify(Productos));//se guarda la modificacion de la lista de productos
+  localStorage.setItem("productos", JSON.stringify(Productos)); //se guarda la modificacion de la lista de productos
   displayProducts();
   DisplayProAdmin();
 });
+//Vaciar el Carrito-----------------------------------------------------------------------------
+function LimpiarCarrito(){
+  Carrito = [];
+  displayCart();
+  localStorage.setItem("carrt", JSON.stringify(Carrito)); //Se guarda Carrito pero vacio
+}
 //mostrar el footer al llegar al fondo de la pagina y al dar scroll-----------------------------------------------------------------
 let lastScrollY = window.scrollY;
 window.addEventListener("scroll", () => {
@@ -351,4 +412,4 @@ displayCart();
 DisplayProAdmin();
 displayProducts();
 VerificarCompra();
-getLocalStorageSize()
+getLocalStorageSize();

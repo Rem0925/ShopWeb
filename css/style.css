@@ -174,6 +174,54 @@ footer {
 .i:active {
   transform: translate(-270%, -36%) !important;
 }
+#Editt {
+  position: absolute;
+  background-color: transparent;
+  text-shadow: 1px 1px 2px black;
+  color: #2ecc71;
+  -webkit-text-stroke: 0.3px #27ae60;
+  font-size: 20px;
+  width: 0px;
+  padding: 1px 1px;
+  border-radius: 30px;
+  transform: translateX(5000%);
+  z-index: 10;
+  transition: 0.3s ease;
+}
+#Editt:hover {
+  color: #27ae60;
+  -webkit-text-stroke: 0.3px #176d3b;
+}
+.Prev {
+  margin-left: 15%;
+  background-color: transparent;
+  margin-bottom: 5px;
+  font-size: 18px;
+  color: #34495e;
+  font-weight: bold;
+  width: 80%;
+  max-width: 60%;
+  height: 5px;
+  text-align: center;
+  box-sizing: content-box;
+  border-style: none;
+  transition: 0.3s ease;
+}
+.Prev:not(:disabled){
+  border-radius: 0px;
+  border-bottom-style: solid;
+  border-color: #4c5353 ;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.Num {
+  margin-top: 5px;
+  width: 30px;
+  text-align: center;
+}
 .CarEle {
   border: 1px solid #bdc3c7;
   border-radius: 20px;
@@ -233,7 +281,7 @@ section span {
 }
 #Error {
   background-color: white !important;
-  color: red;
+  color: #e74c3c;
   margin-top: 0;
   font-size: 1rem;
   padding: 0;
@@ -343,9 +391,11 @@ input {
   background-color: #f5f7fa;
 }
 .Admin-Panel section img {
-  height: 50px;
-  width: 50px;
+  height: 100px;
+  width: 100px;
   border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 select#listProduct {
   width: 100%;
@@ -394,7 +444,7 @@ select#listProduct option {
     font-size: 1.5rem;
     margin: 0;
   }
-  footer p{
+  footer p {
     font-size: 10px;
   }
   nav ul {
@@ -493,6 +543,13 @@ select#listProduct option {
   }
   .i:active {
     transform: translate(-210%, -40%) !important;
+  }
+  #Editt {
+    transform: translate(4500%,-420%);
+  }
+  .Prev {
+    margin-left: 0;
+    font-size: 15px;
   }
   #cart ul {
     list-style: none;
