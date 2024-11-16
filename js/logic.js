@@ -5,7 +5,6 @@ const Botones = {
   Admin: document.getElementById("admin_BTN"),
 };
 //Referencia a cada una de las secciones de la pagina
-var hola = "Hola";
 const Sections = {
   Productos: document.getElementById("products"),
   Carrito: document.getElementById("cart"),
