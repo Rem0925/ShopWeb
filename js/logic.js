@@ -65,13 +65,15 @@ function displayProducts(filter = "") {
             <h3>${product.name} </h3>
             <p>${product.price} $</p>
             <img src="${product.imagen}" alt="producto ${product.id}">
-            <button onclick="AgregarCarro(${product.id},'${product.name}',${product.price},
-            '${product.imagen}');">Agregar al carrito</button>
+            <button class="Agre" id="BT_${product.id}" data-product="${product.id},${product.name},${product.price},${product.imagen}"  
+            onclick="AgregarCarro(${product.id},'${product.name}',${product.price},
+            '${product.imagen}'); disableButton(this);" >Agregar al carrito</button>
             `;
       productsSection.appendChild(productElement);
     }
   });
 }
+
 function DisplayProAdmin() {
   ListaProductosAD.innerHTML = " ";
   Productos.forEach((product) => {
@@ -97,6 +99,20 @@ ListaProductosAD.addEventListener("change", function () {
     }
   }
 });
+function VerificarCompra() {
+  Carrito.forEach((item) => {
+    const button = document.getElementById(`BT_${item.id}`);
+    if (button) {
+      disableButton(button);
+    }
+  });
+}
+
+function disableButton(btn) {
+  btn.disabled = true;
+  btn.onclick = null;
+  btn.innerHTML = "En el Carrito";
+}
 function AgregarCarro(idd, namee, pricee, image) {
   Carrito.push({
     id: idd,
@@ -104,6 +120,7 @@ function AgregarCarro(idd, namee, pricee, image) {
     price: pricee,
     imagen: image,
     numero: 0,
+    cantidad: 1,
   });
   localStorage.setItem("carrt", JSON.stringify(Carrito));
   displayCart();
@@ -115,13 +132,36 @@ function displayCart() {
   Carrito.forEach((e) => {
     const CarElemet = document.createElement("li");
     CarElemet.classList.add("CarEle");
-    CarElemet.innerHTML = `<img src="${e.imagen}" alt="producto ${e.id}">
-            <b> ${e.name} </b> - ${e.price} $
+    CarElemet.innerHTML = `<button class="CantB i" onclick="SumarP(${
+      e.id
+    });"><i class="bi bi-plus-circle-fill"></i></button> <div class="Cant"> ${
+      e.cantidad
+    } </div> <button class="CantB" onclick="RestarP(${
+      e.id
+    });"><i class="bi bi-dash-circle-fill"></i></button>
+     <img src="${e.imagen}" alt="producto ${e.id}">
+            <b> ${e.name} </b> - ${e.price} $ - tot: ${e.price * e.cantidad} $
              <button onclick="EliminarDeCarrito(${e.id})">Eliminar</button>`;
     CartLit.appendChild(CarElemet);
-    total += e.price;
+    total += e.price * e.cantidad;
   });
   document.getElementById("total").textContent = total;
+}
+function RestarP(elemt1) {
+  var Buscar = Carrito.findIndex((item) => item.id === elemt1);
+  if (Carrito[Buscar].cantidad > 1) {
+    Carrito[Buscar].cantidad = Carrito[Buscar].cantidad - 1;
+    displayCart();
+    localStorage.setItem("carrt", JSON.stringify(Carrito));
+  }
+}
+function SumarP(elemt1) {
+  var Buscar = Carrito.findIndex((item) => item.id === elemt1);
+  if (Carrito[Buscar].cantidad < 9) {
+    Carrito[Buscar].cantidad = Carrito[Buscar].cantidad + 1;
+    displayCart();
+    localStorage.setItem("carrt", JSON.stringify(Carrito));
+  }
 }
 function EliminarDeCarrito(Elem) {
   const Buscar = Carrito.findIndex((item) => item.id === Elem);
@@ -131,7 +171,6 @@ function EliminarDeCarrito(Elem) {
     displayCart();
   }
 }
-
 //mostrar siempre al principio la seccion de productos
 Sections.Productos.style.display = "block";
 
@@ -216,7 +255,7 @@ function agregarProducto() {
     id: Productos.length + 1,
     name: productName,
     price: Number(productPrice),
-    imagen: newProductImage,
+    imagen: newProductImage ?? "img/NoImg.jpg",
   };
   Productos.push(newProduct);
   localStorage.setItem("productos", JSON.stringify(Productos));
@@ -234,7 +273,7 @@ addProductButton.addEventListener("click", function (event) {
   Carrito = [];
   displayCart();
   localStorage.setItem("carrt", JSON.stringify(Carrito));
-  event.preventDefault(); 
+  event.preventDefault();
   agregarProducto();
 });
 deleteProductButton.addEventListener("click", function () {
@@ -250,7 +289,49 @@ deleteProductButton.addEventListener("click", function () {
   DisplayProAdmin();
 });
 // Verificar si el usuario está logeado al cargar la página
+
+let lastScrollY = window.scrollY;
+window.addEventListener("scroll", () => {
+  const footer = document.querySelector("footer");
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.scrollY;
+  if (scrollTop > lastScrollY) {
+    footer.style.transform = "translateY(0)";
+  } else {
+    footer.style.transform = "translateY(100%)";
+  }
+  if (scrollTop + windowHeight >= documentHeight) {
+    footer.style.transform = "translateY(0)";
+  }
+  lastScrollY = scrollTop;
+});
+
+document.addEventListener("click", () => {
+  const footer = document.querySelector("footer");
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  if (documentHeight - 100 <= windowHeight) {
+    footer.style.transform = "translateY(0)";
+  } else {
+    footer.style.transform = "translateY(100%)";
+  }
+});
+
+function getLocalStorageSize() {
+  let total = 0;
+  for (let key in localStorage) {
+    if (localStorage.hasOwnProperty(key)) {
+      total += (localStorage[key].length + key.length) * 2;
+    }
+  }
+  console.log(`Total space used in localStorage: ${total} bytes`);
+  return total;
+}
+
 verificarSesion();
 displayCart();
 DisplayProAdmin();
 displayProducts();
+VerificarCompra();
+getLocalStorageSize()
