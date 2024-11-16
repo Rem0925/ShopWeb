@@ -120,21 +120,25 @@ ListaProductosAD.addEventListener("change", function () {
     }
   }
 });
+//Editar los productos ya existentes desde la pestaña admin-------------------------------------------------------------
 let productoEditImg = null;
 function EditarPro() {
   LimpiarCarrito();
   EditarProducto = !EditarProducto;
   if (EditarProducto == true && Productos.length > 0) {
+    //activar la edicion cuando "EditarProducto" sea verdadero
     Previa.name.disabled = false;
-      Previa.price.disabled = false;
+    Previa.price.disabled = false;
     Previa.edit.innerHTML = `<i class="bi bi-check2-circle"></i>`;
     Previa.img.addEventListener("click", handleImageClick);
     Previa.img.style.border = "1px solid #4c5353 ";
   } else {
+    //desactivar la edicion cuando sea falso
     Previa.img.style.border = "1px solid transparent";
     Previa.edit.innerHTML = `<i class="bi bi-pencil-square">`;
     const Buscar = Productos.findIndex((item) => item.id === Number(Previa.id));
     if (Buscar !== -1) { 
+      //cambiar los datos de la lista de productos si fue que se edito alguno
       if (productoEditImg) {
       Productos[Buscar].imagen = productoEditImg;
       }
@@ -148,9 +152,11 @@ function EditarPro() {
     Previa.img.removeEventListener("click", handleImageClick);
   }
 }
+//abri un input tipo file al darle a la imagen
 function handleImageClick() {
   Previa.fileInput.click();
 }
+//Covertir imagen en ruta---------------------------------------------------------------------------------------------------
 Previa.fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   const reader = new FileReader();
@@ -258,7 +264,7 @@ document.getElementById("Buscar").addEventListener("input", function () {
   displayProducts(filter);
 });
 
-//Agregar un producto a la lista desde la pestaña admin----------------------------------------------------------------------------
+//Iniciar sesion com admin----------------------------------------------------------------------------
 form.addEventListener("submit", (event) => {
   event.preventDefault(); // Evita que el formulario se envíe
   // Validación simple (Seguridad Nula xd)------------------------------------------------------
@@ -316,7 +322,7 @@ function handleImageUpload(event) {
   };
   reader.readAsDataURL(file);
 }
-//Agrego el porducto nuevo--------------------------------------------------------------------
+//Agrego el producto nuevo--------------------------------------------------------------------
 function agregarProducto() {
   const productName = document.getElementById("ProductName").value;
   const productPrice = document.getElementById("Price").value;
