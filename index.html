@@ -3,33 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shop</title>
-    <link rel="icon" href="img/shopping-cart.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Shoping</title>
+    <link rel="icon" href="img/shopping-cart.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <header>
-      <h1> <i class="bi bi-cart-fill"></i> Shop</h1>
+      <h1><i class="bi bi-cart-fill"></i> Shop</h1>
       <nav>
         <ul>
-          <li><button id="products_BTN" onclick="location.reload();"> <i class="bi bi-bag"></i> Productos</button></li>
-          <li><button id="cart_BTN"> <i class="bi bi-cart"></i> Carrito</button></li>
-          <li><button id="admin_BTN"> <i class="bi bi-person-lock"></i> Admin</button></li>
+          <li>
+            <button id="products_BTN" onclick="location.reload();">
+              <i class="bi bi-bag"></i> Productos
+            </button>
+          </li>
+          <li>
+            <button id="cart_BTN"><i class="bi bi-cart"></i> Carrito</button>
+          </li>
+          <li>
+            <button id="admin_BTN">
+              <i class="bi bi-person-lock"></i> Admin
+            </button>
+          </li>
         </ul>
       </nav>
     </header>
     <section id="products">
       <h2>Productos</h2>
-      <input type="search" name="Buscar" id="Buscar" /> <i class="bi bi-search"></i>
+      <input type="search" name="Buscar" id="Buscar" />
+      <i class="bi bi-search"></i>
       <div id="Products_all"></div>
     </section>
-    <section id="cart"style="display: none;">
+    <section id="cart" style="display: none">
       <h2>Carrito de Compras</h2>
       <p>Total:<span id="total">0</span>$</p>
       <ul id="Cart-Items"></ul>
     </section>
-    <section id="admin" style="display: none;">
+    <section id="admin" style="display: none">
       <h2>Panel de Administrador</h2>
 
       <form id="Login">
@@ -58,21 +72,49 @@
           <button id="Agregar">Agregar Producto</button>
         </div>
         <div class="Admin-Panel">
-          <select name="listProduct" id="listProduct">
-          </select>
+          <select name="listProduct" id="listProduct"></select>
           <section id="VistaPrevia">
-            <button class="Edit_p" id="Editt" onclick="EditarPro()" ><i class="bi bi-pencil-square"></i></button>
-            <h3><input type="text" id="NombreProAd" class="Prev" value="Titulo" disabled></h3>
+            <button class="Edit_p" id="Editt" onclick="EditarPro()">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <h3>
+              <input
+                type="text"
+                id="NombreProAd"
+                class="Prev"
+                value="Titulo"
+                disabled
+              />
+            </h3>
             <img id="ImgProAd" src="" alt="producto" />
-            <input type="file" id="fileInput" accept="image/*" style="display: none">
-            <p><input type="number" id="PriceProAd" class="Prev Num" value="0" disabled> $ </p>
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              style="display: none"
+            />
+            <p>
+              <input
+                type="number"
+                id="PriceProAd"
+                class="Prev Num"
+                value="0"
+                disabled
+              />
+              $
+            </p>
           </section>
           <button id="BorrarProducto">Quitar Producto</button>
         </div>
         <button id="cerrarSesion">Cerrar Sesión</button>
       </div>
     </section>
-    <footer> <p>Ramon Mesa  <i class="bi bi-c-circle"> </i>  Todos los derechos reservados. 2024</p></footer>
+    <footer>
+      <p>
+        Ramon Mesa <i class="bi bi-c-circle"> </i> Todos los derechos
+        reservados. 2024
+      </p>
+    </footer>
     <script src="js/logic.js"></script>
   </body>
 </html>
