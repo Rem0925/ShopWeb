@@ -19,8 +19,6 @@ header {
   align-items: center;
 }
 img {
-  object-fit: contain;
-  aspect-ratio: 3/2;
   filter: drop-shadow(0 0 0.15rem rgb(110, 110, 110));
 }
 
