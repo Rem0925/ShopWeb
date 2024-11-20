@@ -29,36 +29,6 @@ form.addEventListener("input", (event) => {
 });
 
 Previa.id.innerHTML = `<strong>Id de Compra:</strong> ${idCompra}`;
-form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    Cart = JSON.parse(localStorage.getItem("carrt"));
-   enviar.innerText = "Enviando...";
-    const serviceID = "default_service";
-    const templateID = "template_3w7dsln";
-    // Captura los datos del formulario y crea un objeto con los detalles del pedido
-    const pedido = {
-      from_name: formData.from_name,
-      email: formData.email,
-      tlf:formData.telefono,
-      id: idCompra,
-      total: Tot,
-      carrito: Cart.map((item) => ({
-        nombre: item.name,
-        precio: item.price,
-        cantidad: item.cantidad,
-        precio_total: item.price * item.cantidad,
-      })),
-    }; // Envía los datos del pedido utilizando EmailJS
-    emailjs.send(serviceID, templateID, pedido).then(
-      () => {
-        enviar.innerText = "Enviado";
-        alert("Pedido Enviado!");
-        mostrarTicket();
-        window.parent.postMessage('activarBotonGuardar', '*');
-      },
-    );
-  });
-
 
 function displayCart() {
   Previa.Carrito.innerHTML = "";
@@ -90,3 +60,34 @@ function mostrarTicket(){
   displayCart();
 }
 displayCart();
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  Cart = JSON.parse(localStorage.getItem("carrt"));
+ enviar.innerText = "Enviando...";
+  const serviceID = "default_service";
+  const templateID = "template_3w7dsln";
+  // Captura los datos del formulario y crea un objeto con los detalles del pedido
+  const pedido = {
+    from_name: formData.from_name,
+    email: formData.email,
+    tlf:formData.telefono,
+    id: idCompra,
+    total: Tot,
+    carrito: Cart.map((item) => ({
+      nombre: item.name,
+      precio: item.price,
+      cantidad: item.cantidad,
+      precio_total: item.price * item.cantidad,
+    })),
+  }; // Envía los datos del pedido utilizando EmailJS
+  emailjs.send(serviceID, templateID, pedido).then(
+    () => {
+      enviar.innerText = "Enviado";
+      alert("Pedido Enviado!");
+      mostrarTicket();
+      window.parent.postMessage('activarBotonGuardar', '*');
+    },
+  );
+});
+
