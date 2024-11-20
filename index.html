@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shop</title>
     <link rel="icon" href="img/shopping-cart.ico" />
+    <link rel="stylesheet" href="css/style.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
-    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   </head>
   <body>
+    <div id="content-holder" onclick="toggleIframe(false);">
+      <iframe  id="content-iframe" src="Pedido.html" onload="resizeIframe()"></iframe>
+      <button id="Gr" onclick="GuardarImg()" style="display: none;">Guardar Pedido</button>
+    </div>  
     <header>
       <h1><i class="bi bi-cart-fill"></i> Shop</h1>
       <nav>
@@ -42,6 +47,10 @@
       <h2>Carrito de Compras</h2>
       <p>Total:<span id="total">0</span>$</p>
       <ul id="Cart-Items"></ul>
+      <div id="Botones-Carrito">
+        <button id="LimpiarCart" onclick="LimpiarCarrito();">Limpiar Carrito</button>
+        <button id="Comprar_BTN" onclick="toggleIframe(true); ">Hacer Pedido</button>
+      </div>
     </section>
     <section id="admin" style="display: none">
       <h2>Panel de Administrador</h2>

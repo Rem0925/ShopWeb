@@ -18,6 +18,7 @@ const passwordInput = document.getElementById("password");
 const errorMessage = document.getElementById("Error");
 const cerrarSesionButton = document.getElementById("cerrarSesion");
 const ListaProductosAD = document.getElementById("listProduct");
+const HacerPedidoBTN = document.getElementById("Comprar_BTN");
 //Referncia a la vista previa de los productos en la seccion de eliminar-----------------------------
 const Previa = {
   name: document.getElementById("NombreProAd"),
@@ -137,10 +138,10 @@ function EditarPro() {
     Previa.img.style.border = "1px solid transparent";
     Previa.edit.innerHTML = `<i class="bi bi-pencil-square">`;
     const Buscar = Productos.findIndex((item) => item.id === Number(Previa.id));
-    if (Buscar !== -1) { 
+    if (Buscar !== -1) {
       //cambiar los datos de la lista de productos si fue que se edito alguno
       if (productoEditImg) {
-      Productos[Buscar].imagen = productoEditImg;
+        Productos[Buscar].imagen = productoEditImg;
       }
       Previa.name.disabled = true;
       Previa.price.disabled = true;
@@ -156,6 +157,15 @@ function EditarPro() {
 function handleImageClick() {
   Previa.fileInput.click();
 }
+//Ajustar el tamaño del iframe de el Pedido, dependiendo del tamaño del contenido
+function resizeIframe() {
+  const iframe = document.getElementById("content-iframe");
+  const iframeDocument =
+    iframe.contentDocument || iframe.contentWindow.document;
+  iframe.style.height = iframeDocument.body.scrollHeight + "px";
+  iframe.style.width = iframeDocument.body.scrollWidth + "px";
+}
+
 //Covertir imagen en ruta---------------------------------------------------------------------------------------------------
 Previa.fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
@@ -196,10 +206,12 @@ function AgregarCarro(idd, namee, pricee, image) {
 }
 
 //Mostar visualmente los productos que estan en Carrito en su respectiva pestaña--------------------------------------------------
+var total = 0;
 function displayCart() {
+  const BotonesCar = document.getElementById("Botones-Carrito");
   const CartLit = document.getElementById("Cart-Items");
   CartLit.innerHTML = "";
-  var total = 0;
+  total = 0;
   Carrito.forEach((e) => {
     const CarElemet = document.createElement("li");
     CarElemet.classList.add("CarEle");
@@ -217,7 +229,40 @@ function displayCart() {
     total += e.price * e.cantidad;
   });
   document.getElementById("total").textContent = total;
+
+  if (Carrito.length > 0) {
+    BotonesCar.style.display = "block";
+  } else {
+    BotonesCar.style.display = "none";
+  }
 }
+//Mostrar el apartado del pedido al presionar el boton de hacer compra
+function toggleIframe(show) {
+  const contentHolder = document.getElementById("content-holder");
+  contentHolder.style.visibility = show ? "visible" : "hidden";
+}
+//Guardar el pedido como imagen
+function GuardarImg() {
+  const iframe = document.getElementById("content-iframe");
+  // Usar html2canvas para capturar el iframe
+  html2canvas(iframe.contentWindow.document.body).then((canvas) => {
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = "Ticket.png"; // Nombre del archivo
+    link.click();
+  });
+  toggleIframe(false);
+}
+//mostrar el boton guardar al hacer el pedido dentro del iframeS
+window.addEventListener("message",function (event) {
+    if (event.data === "activarBotonGuardar") {
+    document.getElementById("Gr").style.display = "block";
+    LimpiarCarrito();      
+    }
+  },
+  false
+);
+
 //funcion para disminuir la cantidad de productos de un mismo tipo a comprar----------------------------------------------------------------
 function RestarP(elemt1) {
   var Buscar = Carrito.findIndex((item) => item.id === elemt1);
@@ -326,7 +371,7 @@ function handleImageUpload(event) {
 function agregarProducto() {
   const productName = document.getElementById("ProductName").value;
   const productPrice = document.getElementById("Price").value;
-  if(productPrice >= 1){
+  if (productPrice >= 1) {
     const newProduct = {
       id: Productos.length + 1,
       name: productName,
@@ -338,10 +383,9 @@ function agregarProducto() {
     displayProducts();
     DisplayProAdmin();
     limpiarInputs();
-  }else{
+  } else {
     document.getElementById("Price").style.backgroundColor = "#e74c3c";
   }
-  
 }
 //limpia los imputs al agregar el producto---------------------------------------------------------------------
 function limpiarInputs() {
@@ -359,8 +403,9 @@ addProductButton.addEventListener("click", function (event) {
 });
 //Eliminar el producto seleccionado en la lista al pulsar el boton----------------------------------------------------------
 deleteProductButton.addEventListener("click", function () {
- LimpiarCarrito();
-  const selectedOption = ListaProductosAD.options[ListaProductosAD.selectedIndex];
+  LimpiarCarrito();
+  const selectedOption =
+    ListaProductosAD.options[ListaProductosAD.selectedIndex];
   const productId = +selectedOption.value;
   Productos = Productos.filter((product) => product.id !== productId);
   localStorage.setItem("productos", JSON.stringify(Productos)); //se guarda la modificacion de la lista de productos
@@ -368,7 +413,7 @@ deleteProductButton.addEventListener("click", function () {
   DisplayProAdmin();
 });
 //Vaciar el Carrito-----------------------------------------------------------------------------
-function LimpiarCarrito(){
+function LimpiarCarrito() {
   Carrito = [];
   displayCart();
   localStorage.setItem("carrt", JSON.stringify(Carrito)); //Se guarda Carrito pero vacio
