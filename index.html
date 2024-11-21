@@ -14,9 +14,15 @@
   </head>
   <body>
     <div id="content-holder" onclick="toggleIframe(false);">
-      <iframe  id="content-iframe" src="Pedido.html" onload="resizeIframe()"></iframe>
-      <button id="Gr" onclick="GuardarImg()" style="display: none;">Guardar Pedido</button>
-    </div>  
+      <iframe
+        id="content-iframe"
+        src="Pedido.html"
+        onload="resizeIframe()"
+      ></iframe>
+      <button id="Gr" onclick="GuardarImg()" style="display: none">
+        Guardar Pedido
+      </button>
+    </div>
     <header>
       <h1><i class="bi bi-cart-fill"></i> Shop</h1>
       <nav>
@@ -48,8 +54,12 @@
       <p>Total:<span id="total">0</span>$</p>
       <ul id="Cart-Items"></ul>
       <div id="Botones-Carrito">
-        <button id="LimpiarCart" onclick="LimpiarCarrito();">Limpiar Carrito</button>
-        <button id="Comprar_BTN" onclick="toggleIframe(true); ">Hacer Pedido</button>
+        <button id="LimpiarCart" onclick="LimpiarCarrito();">
+          Limpiar Carrito
+        </button>
+        <button id="Comprar_BTN" onclick="toggleIframe(true); ">
+          Hacer Pedido
+        </button>
       </div>
     </section>
     <section id="admin" style="display: none">

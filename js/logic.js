@@ -67,7 +67,6 @@ var Carrito =
   JSON.parse(
     localStorage.getItem("carrt")
   ) /*Lo mismo que con los productos, el local storage*/ || [];
-
 //Mostrar todos los productos de array Productos en la pestaña "Productos"--------------------------------------------------
 function displayProducts(filter = "") {
   const productsSection = document.getElementById("Products_all");
@@ -254,10 +253,12 @@ function GuardarImg() {
   toggleIframe(false);
 }
 //mostrar el boton guardar al hacer el pedido dentro del iframeS
-window.addEventListener("message",function (event) {
+window.addEventListener(
+  "message",
+  function (event) {
     if (event.data === "activarBotonGuardar") {
-    document.getElementById("Gr").style.display = "block";
-    LimpiarCarrito();      
+      document.getElementById("Gr").style.display = "block";
+      LimpiarCarrito();
     }
   },
   false
