@@ -353,9 +353,6 @@ function adminFun() {
   form.style.display = "none";
   adminPanel.style.display = "block";
   guardarEstadoSesion("true");
-  document
-    .getElementById("Imagen")
-    .addEventListener("change", handleImageUpload);
 }
 // Función para guardar el estado de inicio de sesión en localStorage----------------------------------------
 function guardarEstadoSesion(estado) {
