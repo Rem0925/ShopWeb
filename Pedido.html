@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datos del Pedido</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #ecf0f1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 0;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+
+      .email-container,
+      #Datos-Pedido {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        width: 100%;
+        max-width: 600px;
+        margin: 20px auto;
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+      .header {
+        background-color: #4caf50;
+        padding: 20px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+      }
+      .header h1 {
+        color: #fff;
+        margin: 0;
+      }
+      .content {
+        padding: 20px;
+      }
+      .product {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        background-color: #f1f1f1;
+        transition: background-color 0.3s;
+      }
+      .product img {
+        max-width: 100px;
+        margin: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .product-details {
+        flex-grow: 1;
+      }
+      .product-name {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #333;
+      }
+      .product-price,
+      .product-quantity,
+      .product-total {
+        font-weight: bold;
+        margin: 5px 0;
+        color: #555;
+      }
+      #total {
+        text-align: right;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #333;
+        margin-top: 20px;
+      }
+      .footer {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        font-size: 0.9em;
+        border-radius: 0 0 8px 8px;
+      }
+      #Datos-Pedido {
+        background-color: white;
+        border: 1px solid #ddd;
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin: 20px;
+        text-align: center;
+        color: #34495e;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #34495e;
+      }
+
+      input[type="text"],
+      input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      #Enviar-Pedido {
+        width: 100%;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+      }
+      #Enviar-Pedido:hover {
+        background-color: #2980b9;
+      }
+      #Des {
+        text-align: center;
+        font-weight: lighter;
+        color: #555;
+      }
+    </style>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+
+    <script type="text/javascript">
+      emailjs.init("b3iF3uFfuQrb42dEC");
+    </script>
+  </head>
+  <body>
+    <section id="Datos-Pedido">
+      <h1>Datos del Comprador</h1>
+      <form id="pedidoForm">
+        <label for="NameUS">Nombre de Usuario:</label>
+        <input
+          type="text"
+          name="from_name"
+          placeholder="Nombre del Usuario"
+          required
+        />
+        <label for="Email">Email:</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo Electrónico"
+          required
+        />
+        <label for="Numero-tlf">Numero de Telefono:</label>
+        <input
+          type="text"
+          name="telefono"
+          pattern="04\d{2}-\d{7}"
+          placeholder="04XX-XXXXXXX"
+          required
+        />
+        <button id="Enviar-Pedido" type="submit">Enviar Pedido</button>
+      </form>
+      <p id="Des">
+        Al darle "Enviar Pedido", se generara una factura de su compra y dicha
+        factura sera tambien enviada al dueño de la pagina
+      </p>
+    </section>
+    <div id="Content" style="display: none">
+      <div class="email-container">
+        <div class="header">
+          <h1>Ticket de Pedido</h1>
+        </div>
+        <div class="content">
+          <p id="NombrePe"></p>
+          <p id="CorreoPe"></p>
+          <p id="TlfPE"></p>
+          <p id="IdPe"></p>
+          <p id="total"></p>
+          <div>
+            <h2 id="CarritoPe">Carrito de compras:</h2>
+            <section id="Cart">
+              <div class="product-details">
+                <img
+                  src="${e.imagen}"
+                  class="product-Imagen"
+                  alt="prodcutoIMG${e.id}"
+                />
+                <p class="product-name">${e.name}</p>
+                <p class="product-quantity">Cantidad:${e.cantidad}</p>
+                <p class="product-price">Precio unitario: ${e.price} $</p>
+                <p class="product-total">Total: ${e.price * e.cantidad} $</p>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="footer">
+          <p>Gracias por tu compra</p>
+        </div>
+      </div>
+    </div>
+    <script src="js/Pedido.js"></script>
+  </body>
+</html>

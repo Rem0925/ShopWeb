@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tienda</title>
+    <link rel="icon" href="img/shopping-cart.ico" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  </head>
+  <body>
+    <div id="content-holder" onclick="toggleIframe(false);">
+      <iframe
+        id="content-iframe"
+        src="Pedido.html"
+        onload="resizeIframe()"
+      ></iframe>
+      <button id="Gr" onclick="GuardarImg()" style="display: none">
+        Guardar Pedido
+      </button>
+    </div>
+    <header>
+      <h1><i class="bi bi-cart-fill"></i> Shop</h1>
+      <nav>
+        <ul>
+          <li>
+            <button id="products_BTN" onclick="location.reload();">
+              <i class="bi bi-bag"></i> Productos
+            </button>
+          </li>
+          <li>
+            <button id="cart_BTN"><i class="bi bi-cart"></i> Carrito</button>
+          </li>
+          <li>
+            <button id="admin_BTN">
+              <i class="bi bi-person-lock"></i> Admin
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <section id="products">
+      <h2>Productos</h2>
+      <input type="search" name="Buscar" id="Buscar" />
+      <i class="bi bi-search"></i>
+      <div id="Products_all"></div>
+    </section>
+    <section id="cart" style="display: none">
+      <h2>Carrito de Compras</h2>
+      <p>Total:<span id="total">0</span>$</p>
+      <ul id="Cart-Items"></ul>
+      <div id="Botones-Carrito">
+        <button id="LimpiarCart" onclick="LimpiarCarrito();">
+          Limpiar Carrito
+        </button>
+        <button id="Comprar_BTN" onclick="toggleIframe(true); ">
+          Hacer Pedido
+        </button>
+      </div>
+    </section>
+    <section id="admin" style="display: none">
+      <h2>Panel de Administrador</h2>
+
+      <form id="Login">
+        <label for="Username">Usuario:</label>
+        <input type="text" name="username" id="username" />
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" id="password" />
+        <span id="Error" style="display: none"
+          >Usuario o Contraseña incorrecto</span
+        >
+        <button type="submit">Iniciar Admin</button>
+      </form>
+      <div id="Ad_Pan" style="display: none">
+        <div class="Admin-Panel">
+          <label for="ProductName">Nombre del Producto</label>
+          <input type="text" name="NombreProducto" id="ProductName" />
+          <label for="PricePro">Precio Del Producto</label>
+          <input type="number" name="Precio" id="Price" />
+          <label for="Img">Imagen del Producto</label>
+          <input
+            type="file"
+            id="Imagen"
+            name="Imagen"
+            accept="image/png, image/jpeg"
+          />
+          <button id="Agregar">Agregar Producto</button>
+        </div>
+        <div class="Admin-Panel">
+          <select name="listProduct" id="listProduct"></select>
+          <section id="VistaPrevia">
+            <button class="Edit_p" id="Editt" onclick="EditarPro()">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <h3>
+              <input
+                type="text"
+                id="NombreProAd"
+                class="Prev"
+                value="Titulo"
+                disabled
+              />
+            </h3>
+            <img id="ImgProAd" src="" alt="producto" />
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              style="display: none"
+            />
+            <p>
+              <input
+                type="number"
+                id="PriceProAd"
+                class="Prev Num"
+                value="0"
+                disabled
+              />
+              $
+            </p>
+          </section>
+          <button id="BorrarProducto">Quitar Producto</button>
+        </div>
+        <button id="cerrarSesion">Cerrar Sesión</button>
+      </div>
+    </section>
+    <footer>
+      <p>
+        Ramon Mesa <i class="bi bi-c-circle"> </i> Todos los derechos
+        reservados. 2024
+      </p>
+    </footer>
+  
+    <script src="js/logic.js" type="module"></script>
+  </body>
+</html>
