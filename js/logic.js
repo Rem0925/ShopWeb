@@ -190,7 +190,7 @@ function handleImageClick() {
   Previa.fileInput.click();
 }
 //Ajustar el tamaño del iframe de el Pedido, dependiendo del tamaño del contenido
-function resizeIframe() {
+window.resizeIframe = function() {
   const iframe = document.getElementById("content-iframe");
   const iframeDocument =
     iframe.contentDocument || iframe.contentWindow.document;
@@ -216,13 +216,13 @@ function VerificarCompra() {
   });
 }
 //funcion de desactivar el boton de agregar al carrito--------------------------------------------------------------------------------------
-function disableButton(btn) {
+window.disableButton = function(btn) {
   btn.disabled = true;
   btn.onclick = null;
   btn.innerHTML = "En el Carrito";
 }
 //Agregar el producto al carrito----------------------------------------------------------------------------------------
-function AgregarCarro(idd, namee, pricee, image) {
+window.AgregarCarro = function(idd, namee, pricee, image) {
   Carrito.push({
     id: idd,
     name: namee,
@@ -267,12 +267,12 @@ function displayCart() {
   }
 }
 //Mostrar el apartado del pedido al presionar el boton de hacer compra
-function toggleIframe(show) {
+window.toggleIframe = function(show) {
   const contentHolder = document.getElementById("content-holder");
   contentHolder.style.visibility = show ? "visible" : "hidden";
 }
 //Guardar el pedido como imagen
-function GuardarImg() {
+window.GuardarImg = function() {
   const iframe = document.getElementById("content-iframe");
   // Usar html2canvas para capturar el iframe
   html2canvas(iframe.contentWindow.document.body).then((canvas) => {
@@ -296,7 +296,7 @@ window.addEventListener(
 );
 
 //funcion para disminuir la cantidad de productos de un mismo tipo a comprar----------------------------------------------------------------
-function RestarP(elemt1) {
+window.RestarP = function(elemt1) {
   var Buscar = Carrito.findIndex((item) => item.id === elemt1);
   if (Carrito[Buscar].cantidad > 1) {
     Carrito[Buscar].cantidad = Carrito[Buscar].cantidad - 1;
@@ -305,7 +305,7 @@ function RestarP(elemt1) {
   }
 }
 //funcion para aumente la cantidad de productos de un mismo tipo a comprar-------------------------------------------------------
-function SumarP(elemt1) {
+window.SumarP = function(elemt1) {
   var Buscar = Carrito.findIndex((item) => item.id === elemt1);
   if (Carrito[Buscar].cantidad < 9) {
     Carrito[Buscar].cantidad = Carrito[Buscar].cantidad + 1;
@@ -374,9 +374,6 @@ function verificarSesion() {
   if (estaLogueado === "true") {
     form.style.display = "none";
     adminPanel.style.display = "block";
-    document
-      .getElementById("Imagen")
-      .addEventListener("change", handleImageUpload);
   }
 }
 
@@ -462,7 +459,7 @@ deleteProductButton.addEventListener("click", async function () {
     }
 });
 //Vaciar el Carrito-----------------------------------------------------------------------------
-function LimpiarCarrito() {
+window.LimpiarCarrito = function() {
   Carrito = [];
   displayCart();
   localStorage.setItem("carrt", JSON.stringify(Carrito)); //Se guarda Carrito pero vacio
