@@ -427,7 +427,6 @@ function limpiarInputs() {
   document.getElementById("ProductName").value = "";
   document.getElementById("Price").value = "";
   document.getElementById("Imagen").value = "";
-  newProductImage = null;
 }
 //Al dar click al boton de agregar producto pues se agrega a la lista de productos----------------------------------------------------
 addProductButton.addEventListener("click", function (event) {
