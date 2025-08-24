@@ -136,7 +136,7 @@ ListaProductosAD.addEventListener("change", async function () {
 });
 //Editar los productos ya existentes desde la pestaña admin-------------------------------------------------------------
 let productoEditImg = null;
-async function EditarPro() {
+window.EditarPro = async function() {
     LimpiarCarrito();
     EditarProducto = !EditarProducto;
   
@@ -245,21 +245,15 @@ function displayCart() {
   Carrito.forEach((e) => {
     const CarElemet = document.createElement("li");
     CarElemet.classList.add("CarEle");
-    CarElemet.innerHTML = `<button class="CantB i" onclick="SumarP(${
-      e.id
-    });"><i class="bi bi-plus-circle-fill"></i></button> <div class="Cant"> ${
-      e.cantidad
-    } </div> <button class="CantB" onclick="RestarP(${
-      e.id
-    });"><i class="bi bi-dash-circle-fill"></i></button>
+    // Fíjate en las comillas simples ' ' alrededor de ${e.id}
+    CarElemet.innerHTML = `<button class="CantB i" onclick="SumarP('${e.id}');"><i class="bi bi-plus-circle-fill"></i></button> <div class="Cant"> ${e.cantidad} </div> <button class="CantB" onclick="RestarP('${e.id}');"><i class="bi bi-dash-circle-fill"></i></button>
      <img src="${e.imagen}" alt="producto ${e.id}">
             <b> ${e.name} </b> - ${e.price} $ - tot: ${e.price * e.cantidad} $
-             <button onclick="EliminarDeCarrito(${e.id})">Eliminar</button>`;
+             <button onclick="EliminarDeCarrito('${e.id}')">Eliminar</button>`;
     CartLit.appendChild(CarElemet);
     total += e.price * e.cantidad;
   });
   document.getElementById("total").textContent = total;
-
   if (Carrito.length > 0) {
     BotonesCar.style.display = "block";
   } else {
